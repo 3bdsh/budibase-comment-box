@@ -61,7 +61,7 @@
       // Refresh from the server to ensure we're consistent, and to update UI
       await loadComments()
     } catch (error) {
-      notificationStore.actions.error("Failed to save comments")
+      notificationStore.actions.error("فشل إضافة تعليق!")
       console.error(error)
     }
   }
@@ -85,7 +85,7 @@
       }
       await saveComments([...existingComments, newComment])
     } catch (error) {
-      notificationStore.actions.error("Failed to add comment")
+      notificationStore.actions.error("فشل إضافة تعليق!")
       console.error(error)
     }
   }
@@ -99,7 +99,7 @@
       const existingComments = await getComments()
       await saveComments(existingComments.filter(x => x.timestamp !== comment.timestamp))
     } catch (error) {
-      notificationStore.actions.error("Failed to delete comment")
+      notificationStore.actions.error("فشل حذف تعليق!")
       console.error(error)
     }
   }
@@ -130,10 +130,10 @@
   </div>
   <div class="form">
     <Avatar name={currentName} email={$authStore.email} />
-    <textarea on:keypress={handleKeyPress} bind:value={text} rows="2" placeholder="Add a comment..." />
+    <textarea on:keypress={handleKeyPress} bind:value={text} rows="2" placeholder="إضافة تعليق..." />
     <div />
     <div class="button">
-      <button on:click={addComment}>Post</button>
+      <button on:click={addComment}>إضافة</button>
     </div>
   </div>
 </div>
