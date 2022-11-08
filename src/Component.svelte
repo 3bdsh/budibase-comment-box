@@ -32,7 +32,7 @@
     if (typeof value !== "string" || !value?.length) {
       return []
     }
-    return value.split(separator).map(atob).map(JSON.parse) || []
+    return value.split(separator).map(atob).map(b64enc).map(JSON.parse) || []
   }
 
   const loadComments = async () => {
@@ -49,7 +49,7 @@
     }
     try {
       // Encode the array of comments
-      const encoded = comments.map(JSON.stringify).map(btoa).join(separator)
+      const encoded = comments.map(JSON.stringify).map(b64enc).map(btoa).join(separator)
 
       // Update row
       const row = await getRow()
@@ -61,7 +61,7 @@
       // Refresh from the server to ensure we're consistent, and to update UI
       await loadComments()
     } catch (error) {
-      notificationStore.actions.error("فشل إضافة تعليق!")
+      notificationStore.actions.error("Failed to save comments")
       console.error(error)
     }
   }
@@ -85,7 +85,7 @@
       }
       await saveComments([...existingComments, newComment])
     } catch (error) {
-      notificationStore.actions.error("فشل إضافة تعليق!")
+      notificationStore.actions.error("Failed to add comment")
       console.error(error)
     }
   }
@@ -99,7 +99,7 @@
       const existingComments = await getComments()
       await saveComments(existingComments.filter(x => x.timestamp !== comment.timestamp))
     } catch (error) {
-      notificationStore.actions.error("فشل حذف تعليق!")
+      notificationStore.actions.error("Failed to delete comment")
       console.error(error)
     }
   }
@@ -130,10 +130,10 @@
   </div>
   <div class="form">
     <Avatar name={currentName} email={$authStore.email} />
-    <textarea on:keypress={handleKeyPress} bind:value={text} rows="2" placeholder="إضافة تعليق..." />
+    <textarea on:keypress={handleKeyPress} bind:value={text} rows="2" placeholder="Add a comment..." />
     <div />
     <div class="button">
-      <button on:click={addComment}>إضافة</button>
+      <button on:click={addComment}>Post</button>
     </div>
   </div>
 </div>
